@@ -1,0 +1,169 @@
+This first part of the document is the requirements the robot should meet. Then we list some tasks that are specific to vision that are implied by the requirements.  
+There are detailed things the robot needs to do described here that now we should turn into Github tasks. Things highlighted in yellow still need definition. 
+
+**Requirements**
+
+1. The robot needs to drive  
+   1. In a straight line with accuracy TBD  (1%?) and at speeds up to ?  
+   2. By turning to a required angle within TBD (5 degrees?)  
+   3. Control  
+      1. field position knowledge (april tags, human knowledge, gyroscope (Pigeon), encoders)  
+         1. field oriented control	\- be able to take poses from PhotonVision  
+         2. PID controllers tuned to achieve accuracy
+
+      
+
+2. What the robot should be able to do in autonomous (tasks described in more detail in the sections that follow)   
+   1. preload coral on tomahawk  
+   2. move from starting position to reef location (match by match define)  
+      1. targeted branch by inputting april tag  
+   3. align on x axis  
+   4. score on level 4 per requirements above (no algae interference)  
+   5. remove algae TBD  
+        
+3. Driver station  
+   1. Make physical driver station  
+   2. Determine needed teleop functions  
+1. Possible defined button push functions for button box:  
+1. Score coral (split into multiple buttons?) precision place coral x, y, z  
+   1. detect april tag for rough positioning  
+   2. align to reef forward position  
+   3. pick level 2 and score coral (utilizing elevator)  
+      1. encoder until level 2  
+      2. tomahawk swings to place coral to level 2 angle  
+      3. uses encoder  
+      4. retract tomahawk  
+      5. retract elevator  
+      6. Encoder  
+2. Score coral on level 3: as level 2 but different height and angle  
+3. Score coral on level 4: as level 2 but different height and angle  
+4. Level 1 coral scoring only by dropping from level 4   
+5. Intake Coral  
+   1. South (and North\*) intake deploy  
+      1. Detect nearest coral  
+      2. Align to coral  
+      3. Go towards coral and slow down while approaching  
+      4. Intake coral  
+6. Intake algae: same as coral \- have a “shift button” to change any setting that need to be different between coral and algae acquire/score  
+7. Deploy algae in processor
+
+   
+
+4. The robot shall acquire coral  
+   1. The robot shall acquire coral from ground  
+      1. intake from either side  
+   2. Control summary: sense coral, deploy intake, ingest coral, align coral, handoff to scoring mechanism. Steps:  
+      1. human driver aligns robot and drives so intake touches coral  
+         2. control deploys right or left intake  
+            1. encoder  
+         3. ingest coral  
+            1. turn motor and sense load via motor current increase  
+         4. Rotate intake 180 degrees  
+         5. Position tomahawk for handoff  
+         6. Reverse the intake to push the coral out, into the tomahawk  
+         7. Move tomahawk with coral to ready-for-scoring position while driving toward reef  
+   3. The robot shall acquire coral from human station via ground same as other acquire requirements  
+      
+
+5\. The robot shall acquire algae
+
+1. The robot shall acquire algae from ground only  
+   2. intake same as coral (for South intake)  
+      
+
+6\. The robot shall score coral with tomahawk
+
+1. Assume coral has been handed off to tomahawk and tomahawk is in ready-for-scoring position.  
+2. Driver specifies which reef "tree" to score on, and at what level (must choose an unoccupied branch)  
+3. score at levels 2, 3, 4   
+   4. TBD score level 1  
+   5. Control
+
+      Summary: Proximity sensors, april tags, align with reef, select level, assume elevator and tomahawk functional to support scoring (consider algae removal)
+
+      1. detect april tag for rough positioning  
+         2. align to reef forward position  
+            3. pick level 2 and score coral (utilizing elevator)  
+               1. encoder until level 2  
+               2. tomahawk swings to place coral to level 2 angle  
+               3. uses encoder  
+               4. retract tomahawk  
+               5. retract elevator  
+               6. Encoder  
+         2. Score coral on level 3: as level 2 but different height and angle  
+         3. Score coral on level 4: as level 2 but different height and angle  
+         4. Level 1 coral scoring only by dropping from level 4 
+
+			
+
+7\.  The robot shall remove algae from reef  
+Side task to align in vertical position e.6 (see “Robot score coral with tomahawk”)
+
+8\.  The robot shall score algae in processor
+
+1. assume intake of algae on robot  
+   2. rough align with april tag on processor  
+   3. Use intake to push algae out into processor  
+   4. Only the intake or other mechanisms? Sensors needed?
+
+9\. The robot shall deep climb
+
+1. Swing tomahawk out of the way to avoid touching the chain  
+   2. align with cage  
+   3. Preplan which cage, and/or use positioning from nearby april tags, especially processor and reef  
+   4. pushing cage into central chassis of robot  
+   5. intake swing up to grab cage  
+   6. lever to lock in place and raise  
+   7. control mechanism  
+   8. stabilize robot  
+   9. center of mass adjustment TBD \- sense how level we are? Vision? gyro? What control authority do we have?
+
+   
+
+10\. The robot shall have bumpers
+
+1. The bumpers shall protect the robot in accordance with the FRC rulebook.  
+2. The bumpers need to provide stabilization of the cage during climb in a way that is TBD 
+
+10\. Robot shall have an electrical subsystem
+
+1. Design and implement electrical board consistent with rulebook  
+2. Position battery for optimum center of mass stability  
+3. Determine wire paths and CAN bus wiring strategy in a way that can be maintained and repaired with minimal disassembly  
+4. Determine “test as you go” procedures for wiring and troubleshooting procedures
+
+   
+
+11\. Algae shall be scored in the barge net by human player
+
+12\. Drivers shall be trained and be able to practice ahead of competition  
+	Driver selection to take place before TBD   
+	Driver practice schedule to be determined 
+
+13\. Pit crews will have checklists for competition and will use them consistently.   
+\_\_\_\_\_\_  
+**Vision tasks**
+
+1. Generate robot poses based on field coordinates such that the swerve drive can autonomously generate a path from sensed current pose to target pose.  
+2. Define poses with appropriate offsets for coral scoring for the 12 possible reef positions, plus processor and 3 cage positions for Red and Blue alliances   
+3. Possibly define poses to assist in taking coral directly from the human player station (collect from the ground in front of the station?)  
+4. Acquire coral: sense coral relative position and orientation  
+5. Score coral: Define any additional alignment desired during positioning   
+6. Acquire algae: sense algae relative position on the field  
+7. Score algae in processor: confirm position on the field relative to appropriate April Tag for red and blue alliance sides 
+
+\_\_\_\_\_\_  
+To define: tests that we are meeting the requirements above   
+**Testbeds and testing**  
+Vision testbed  
+Swerve testbed  
+Testing the robot in the gym for flat-out use  
+Testing the robot interactions with the field elements  
+Testing the code on the simulator  
+Driver training and interaction testing  
+What testing should be assigned to which testbed? What are fidelity limitations?  
+Find our cycle time for various tasks and see how repeatable the time is. (Example: how long does it take to pick up and score a coral on levels 2, or 3, or 4?) Advanced teams will ask about this when doing alliance interviewing..  
+\_\_\_\_\_\_
+
+To define: How much more software documentation we want, and how to get that on Github. (Example: I would like to see what is being posted and read in network tables, and what code libraries/modules are reading and writing that data.) 
+
